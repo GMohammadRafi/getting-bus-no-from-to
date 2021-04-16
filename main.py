@@ -76,16 +76,15 @@ def get_user_details_from_website(driver):
             if bus_start_timings[i].text:
                 temp.append({"starting_bus_timing": bus_start_timings[i].text})
         c = 0
-        if len(locations) % 2 == 0:
+        if len(locations) == len(temp) * 2:
             for i in range(0, len(locations), 2):
                 temp[c]["starting_bus_stop"] = locations[i].text
                 temp[c]["end_bus_stop"] = locations[i + 1].text
                 c += 1
         else:
-            for i in range(0, len(locations)):
-                temp[c]["starting_bus_stop"] = locations[i].text
-                temp[c]["end_bus_stop"] = locations[i + 1].text
-                c += 1
+            for i in range(0, len(locations) - 1):
+                temp[i]["starting_bus_stop"] = locations[i].text
+                temp[i]["end_bus_stop"] = locations[i + 1].text
         bus_end_timings = details.find_elements_by_css_selector(".transit-stop .directions-mode-group-arrival-time")
         add_all(bus_end_timings, "ending_bus_timing")
         bus_no = details.find_elements_by_css_selector(".renderable-component-text-box-content")
@@ -129,18 +128,17 @@ def getting_iframe(driver):
 
 @app.route('/<from_loc_lat>/<from_loc_long>/<to_loc_lat>/<to_loc_long>', methods=["GET"])
 def get_bus_no_timings(from_loc_lat, from_loc_long, to_loc_lat, to_loc_long):
-    # try:
-    get_url_setting_to_loc(from_loc_lat=from_loc_lat,
+    try:
+        get_url_setting_to_loc(from_loc_lat=from_loc_lat,
                                from_loc_long=from_loc_long,
                                to_loc_lat=to_loc_lat,
                                to_loc_long=to_loc_long
                                )
-
-    # except:
-    #     return {
-    #         "error": 300,
-    #         "message": "Something went wrong"
-    #     }
+    except:
+        return {
+            "error": 300,
+            "message": "Something went wrong"
+        }
     while "iframe" not in user_need_details.keys():
         pass
     return user_need_details
