@@ -130,7 +130,7 @@ def getting_iframe(driver):
 
 
 @app.route('/<from_loc_lat>/<from_loc_long>/<to_loc_lat>/<to_loc_long>', methods=["GET"])
-def home(from_loc_lat, from_loc_long, to_loc_lat, to_loc_long):
+def get_bus_no_timings(from_loc_lat, from_loc_long, to_loc_lat, to_loc_long):
     try:
         get_url_setting_to_loc(from_loc_lat=from_loc_lat,
                                from_loc_long=from_loc_long,
@@ -146,6 +146,13 @@ def home(from_loc_lat, from_loc_long, to_loc_lat, to_loc_long):
     while "iframe" not in user_need_details.keys():
         pass
     return user_need_details
+
+
+@app.route('/', methods=["GET"])
+def home():
+    return {
+        "Application": "My - BMTC"
+    }
 
 
 if __name__ == "__main__":
