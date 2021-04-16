@@ -8,13 +8,6 @@ app = Flask('__name__')
 
 user_need_details = {}
 
-chrome_option = webdriver.ChromeOptions()
-chrome_option.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
-chrome_option.add_argument("--headless")
-chrome_option.add_argument("--disable-dev-shm-usage")
-chrome_option.add_argument("--no-sandbox")
-chrome_driver_path = os.environ.get("CHROMEDRIVER_PATH")
-
 
 def check_exists_by_selector(css_selector, driver):
     try:
@@ -25,7 +18,12 @@ def check_exists_by_selector(css_selector, driver):
 
 
 def get_url_setting_to_loc(from_loc_lat, from_loc_long, to_loc_lat, to_loc_long):
-    driver = webdriver.Chrome(executable_path=chrome_driver_path, chrome_option=chrome_option)
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--no-sandbox")
+    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=chrome_options)
     driver.get(f"https://www.google.com/maps/@{from_loc_lat},{from_loc_long},15z")
     try:
         driver.find_element_by_css_selector("#gs_lc50 input").send_keys(f"{to_loc_lat},{to_loc_long}")
