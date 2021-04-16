@@ -36,7 +36,7 @@ def get_url_setting_to_loc(from_loc_lat, from_loc_long, to_loc_lat, to_loc_long)
 
 def set_from_loc(from_loc_lat, from_loc_long, driver):
     try:
-        time.sleep(1)
+        time.sleep(2)
         driver.find_element_by_css_selector(".gstl_51 .sbib_b input").send_keys(f"{from_loc_lat},{from_loc_long}")
         driver.find_elements_by_css_selector(".adjusted-to-decreased-spacing div")[4].find_element_by_css_selector(
             "button").click()
@@ -47,7 +47,7 @@ def set_from_loc(from_loc_lat, from_loc_long, driver):
 
 def setting_bus_as_medium(driver):
     try:
-        time.sleep(1)
+        time.sleep(2)
         driver.find_element_by_css_selector(".section-directions-trip-description button").click()
         get_user_details_from_website(driver)
     except NoSuchElementException:
@@ -55,7 +55,7 @@ def setting_bus_as_medium(driver):
 
 
 def get_user_details_from_website(driver):
-    time.sleep(1)
+    time.sleep(2)
     temp = []
 
     def add_all(data, d):
@@ -120,7 +120,7 @@ def getting_iframe(driver):
         except:
             getting_iframe2()
 
-    time.sleep(1)
+    time.sleep(2)
     getting_iframe1()
     getting_iframe2()
     driver.close()
