@@ -131,18 +131,18 @@ def getting_iframe(driver):
 
 @app.route('/<from_loc_lat>/<from_loc_long>/<to_loc_lat>/<to_loc_long>', methods=["GET"])
 def get_bus_no_timings(from_loc_lat, from_loc_long, to_loc_lat, to_loc_long):
-    try:
-        get_url_setting_to_loc(from_loc_lat=from_loc_lat,
+    # try:
+    get_url_setting_to_loc(from_loc_lat=from_loc_lat,
                                from_loc_long=from_loc_long,
                                to_loc_lat=to_loc_lat,
                                to_loc_long=to_loc_long
                                )
 
-    except:
-        return {
-            "error": 300,
-            "message": "Something went wrong"
-        }
+    # except:
+    #     return {
+    #         "error": 300,
+    #         "message": "Something went wrong"
+    #     }
     while "iframe" not in user_need_details.keys():
         pass
     return user_need_details
