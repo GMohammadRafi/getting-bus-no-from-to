@@ -19,11 +19,11 @@ def check_exists_by_selector(css_selector, driver):
 
 def get_url_setting_to_loc(from_loc_lat, from_loc_long, to_loc_lat, to_loc_long):
     chrome_options = webdriver.ChromeOptions()
-    chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+    chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN") or "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("--no-sandbox")
-    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=chrome_options)
+    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH") or "chromedriver.exe", options=chrome_options)
     driver.get(f"https://www.google.com/maps/@{from_loc_lat},{from_loc_long},15z")
     try:
         driver.find_element_by_css_selector("#gs_lc50 input").send_keys(f"{to_loc_lat},{to_loc_long}")
@@ -36,7 +36,7 @@ def get_url_setting_to_loc(from_loc_lat, from_loc_long, to_loc_lat, to_loc_long)
 
 def set_from_loc(from_loc_lat, from_loc_long, driver):
     try:
-        time.sleep(2)
+        time.sleep(1)
         driver.find_element_by_css_selector(".gstl_51 .sbib_b input").send_keys(f"{from_loc_lat},{from_loc_long}")
         driver.find_elements_by_css_selector(".adjusted-to-decreased-spacing div")[4].find_element_by_css_selector(
             "button").click()
@@ -47,7 +47,7 @@ def set_from_loc(from_loc_lat, from_loc_long, driver):
 
 def setting_bus_as_medium(driver):
     try:
-        time.sleep(2)
+        time.sleep(1)
         driver.find_element_by_css_selector(".section-directions-trip-description button").click()
         get_user_details_from_website(driver)
     except NoSuchElementException:
@@ -55,7 +55,7 @@ def setting_bus_as_medium(driver):
 
 
 def get_user_details_from_website(driver):
-    time.sleep(2)
+    time.sleep(1)
     temp = []
 
     def add_all(data, d):
@@ -85,8 +85,8 @@ def get_user_details_from_website(driver):
             for i in range(0, len(locations) - 1):
                 temp[i]["starting_bus_stop"] = locations[i].text
                 temp[i]["end_bus_stop"] = locations[i + 1].text
-        bus_end_timings = details.find_elements_by_css_selector(".transit-stop .directions-mode-group-arrival-time")
-        add_all(bus_end_timings, "ending_bus_timing")
+        # bus_end_timings = details.find_elements_by_css_selector(".transit-stop .directions-mode-group-arrival-time")
+        # add_all(bus_end_timings, "ending_bus_timing")
         bus_no = details.find_elements_by_css_selector(".renderable-component-text-box-content")
         add_all(bus_no, "bus_no")
         timings_no_of_stop = details.find_elements_by_css_selector(".transit-step-details")
@@ -120,7 +120,7 @@ def getting_iframe(driver):
         except:
             getting_iframe2()
 
-    time.sleep(2)
+    time.sleep(1)
     getting_iframe1()
     getting_iframe2()
     driver.close()
@@ -152,4 +152,7 @@ def home():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="192.168.0.100")
+    if os.environ.get("GOOGLE_CHROME_BIN"):
+        app.run()
+    else:
+        app.run(debug=True, host="192.168.0.100")
