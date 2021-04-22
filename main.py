@@ -11,11 +11,13 @@ user_need_details = {}
 
 def get_url_setting_to_loc(from_loc_lat, from_loc_long, to_loc_lat, to_loc_long):
     chrome_options = webdriver.ChromeOptions()
-    chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN") or "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+    chrome_options.binary_location = os.environ.get(
+        "GOOGLE_CHROME_BIN") or "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("--no-sandbox")
-    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH") or "chromedriver.exe", chrome_options=chrome_options)
+    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH") or "chromedriver.exe",
+                              chrome_options=chrome_options)
     driver.get(
         f"https://www.google.com/maps/dir/'{from_loc_lat},{from_loc_long}'/'{to_loc_lat},{to_loc_long}'/@13.1604339,77.6366039,15z/am=t/data=!4m10!4m9!1m3!2m2!1d77.6366039!2d13.1604339!1m3!2m2!1d{to_loc_long}!2d{to_loc_lat}!3e3")
     get_user_details_from_website(driver)
@@ -36,7 +38,7 @@ def get_user_details_from_website(driver):
         user_need_details["toatal_time"] = str(
             driver.find_element_by_css_selector(".section-layout-root .section-trip-summary h1").text)
         user_need_details["cost"] = str(
-            driver.find_element_by_css_selector(".directions-mode-transit-trip-cost .value").text)
+            driver.find_element_by_css_selector(".directions-mode-transit-trip-cost .val").text)
         details = driver.find_element_by_css_selector(".section-layout-root .section-trip-details")
         bus_start_timings = details.find_elements_by_css_selector(".transit-stop .directions-mode-group-departure-time")
         locations = details.find_elements_by_css_selector(".transit-stop-details h2")
@@ -99,10 +101,10 @@ def getting_iframe(driver):
 def get_bus_no_timings(from_loc_lat, from_loc_long, to_loc_lat, to_loc_long):
     try:
         get_url_setting_to_loc(from_loc_lat=from_loc_lat,
-                           from_loc_long=from_loc_long,
-                           to_loc_lat=to_loc_lat,
-                           to_loc_long=to_loc_long
-                           )
+                               from_loc_long=from_loc_long,
+                               to_loc_lat=to_loc_lat,
+                               to_loc_long=to_loc_long
+                               )
     except:
         return {
             "error": 300,
@@ -124,4 +126,4 @@ if __name__ == "__main__":
     if os.environ.get("GOOGLE_CHROME_BIN"):
         app.run()
     else:
-        app.run(debug=True, host="192.168.0.100")
+        app.run(debug=True,)
