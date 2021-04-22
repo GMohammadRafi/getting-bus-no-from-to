@@ -35,6 +35,8 @@ def get_user_details_from_website(driver):
     try:
         user_need_details["toatal_time"] = str(
             driver.find_element_by_css_selector(".section-layout-root .section-trip-summary h1").text)
+        user_need_details["cost"] = str(
+            driver.find_element_by_css_selector(".directions-mode-transit-trip-cost .value").text)
         details = driver.find_element_by_css_selector(".section-layout-root .section-trip-details")
         bus_start_timings = details.find_elements_by_css_selector(".transit-stop .directions-mode-group-departure-time")
         locations = details.find_elements_by_css_selector(".transit-stop-details h2")
@@ -82,7 +84,7 @@ def getting_iframe(driver):
         try:
             driver.find_elements_by_css_selector(".section-tab-bar button")[1].click()
             user_need_details["iframe"] = \
-                f'{driver.find_element_by_css_selector(".section-embed-map-controls input").get_attribute("value")}'
+                f'{str(driver.find_element_by_css_selector(".section-embed-map-controls input").get_attribute("value")).replace("")}'
             return user_need_details
         except:
             getting_iframe2()
