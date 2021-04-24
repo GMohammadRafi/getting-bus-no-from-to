@@ -1,3 +1,4 @@
+import json
 import time
 import os
 from flask import Flask
@@ -87,7 +88,7 @@ def getting_iframe(driver):
         try:
             driver.find_elements_by_css_selector(".section-tab-bar button")[1].click()
             user_need_details["iframe"] = \
-                str(driver.find_element_by_css_selector(".section-embed-map-controls input").get_attribute("value"))
+                json.loads(driver.find_element_by_css_selector(".section-embed-map-controls input").get_attribute("value"))
             return user_need_details
         except:
             getting_iframe2()
