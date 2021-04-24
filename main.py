@@ -89,8 +89,7 @@ def getting_iframe(driver):
             driver.find_elements_by_css_selector(".section-tab-bar button")[1].click()
             user_need_details["iframe"] = str(
                 driver.find_element_by_css_selector(".section-embed-map-controls input").get_attribute(
-                    "value")).replace("\"", "'").replace("width='600' height='450'",
-                                                         "width='$width' height='$height' gestureHandling: 'greedy'")
+                    "value")).replace("\"", "'")
             return user_need_details
         except:
             getting_iframe2()
