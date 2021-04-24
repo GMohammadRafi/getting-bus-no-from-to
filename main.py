@@ -87,8 +87,10 @@ def getting_iframe(driver):
     def getting_iframe2():
         try:
             driver.find_elements_by_css_selector(".section-tab-bar button")[1].click()
-            user_need_details["iframe"] = \
-                json.loads(driver.find_element_by_css_selector(".section-embed-map-controls input").get_attribute("value"))
+            user_need_details["iframe"] = str(
+                driver.find_element_by_css_selector(".section-embed-map-controls input").get_attribute(
+                    "value")).replace("\"", "'").replace("width='600' height='450'",
+                                                         "width='$width' height='$height' gestureHandling: 'greedy'")
             return user_need_details
         except:
             getting_iframe2()
@@ -128,4 +130,4 @@ if __name__ == "__main__":
     if os.environ.get("GOOGLE_CHROME_BIN"):
         app.run()
     else:
-        app.run(debug=True,)
+        app.run(debug=True, )
