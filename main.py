@@ -11,14 +11,7 @@ user_need_details = {}
 
 
 def get_url_setting_to_loc(from_loc_lat, from_loc_long, to_loc_lat, to_loc_long):
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.binary_location = os.environ.get(
-        "GOOGLE_CHROME_BIN") or "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
-    chrome_options.add_argument("--headless")
-    chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.add_argument("--no-sandbox")
-    driver = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH") or "chromedriver.exe",
-                              chrome_options=chrome_options)
+    driver = webdriver.Chrome("chromedriver.exe")
     driver.get(
         f"https://www.google.com/maps/dir/'{from_loc_lat},{from_loc_long}'/'{to_loc_lat},{to_loc_long}'/@13.1604339,77.6366039,15z/am=t/data=!4m10!4m9!1m3!2m2!1d77.6366039!2d13.1604339!1m3!2m2!1d{to_loc_long}!2d{to_loc_lat}!3e3")
     get_user_details_from_website(driver)
@@ -50,7 +43,6 @@ def get_user_details_from_website(driver):
         for i in range(len(bus_start_timings)):
             if bus_start_timings[i].text:
                 temp.append({"starting_bus_timing": bus_start_timings[i].text})
-
         test = []
         for i in range(len(timings_no_of_stop)):
             if timings_no_of_stop[i].text:
@@ -80,16 +72,14 @@ def get_user_details_from_website(driver):
 def getting_iframe(driver):
     def getting_iframe1():
         try:
-            driver.find_elements_by_css_selector(".pa9YZC9ZNMi__section-directions-details-action button")[1].click()
+            driver.find_elements_by_css_selector(".mapsTactileClientSubviewSectionActionDirectionsdetailsaction__section-directions-details-action button")[1].click()
         except:
             getting_iframe1()
 
     def getting_iframe2():
         try:
             driver.find_elements_by_css_selector(".section-tab-bar button")[1].click()
-            user_need_details["iframe"] = str(
-                driver.find_element_by_css_selector(".section-embed-map-controls input").get_attribute(
-                    "value")).replace("\"", "'")
+            user_need_details["iframe"] = str(driver.find_element_by_css_selector("input").get_attribute("value")).replace("\"","'").replace("width='600' height='450'","width='$width' height='$height' gestureHandling: 'greedy'")
             return user_need_details
         except:
             getting_iframe2()
